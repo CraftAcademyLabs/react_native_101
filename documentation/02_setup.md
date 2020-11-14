@@ -54,4 +54,29 @@ $ code .
 ```
 ![](assets/01_vscode_screen.png)
 
-Change some text and run see them appear on the viw in the simulator. 
+Change some text and run see them appear on the viw in the simulator. You can always reload the app (and perform other actions that we will cover later on in this documentation) by accessing the Control Panel in your xpo app. Press Control Command Z on your keyboard to access the controls and klick on 'Reload':
+
+![](assets/01_simulator_with_commands_panel.png)
+
+### JSX support
+I like to name my components with th `.jsx` suffix. In order for that to work, we need to modify Metro configuration and tell it to look for **both** `.js` files as well as `.jsx`. This is pretty straight-forward.
+
+Create a file named `metro.config.json` in your projects root folder. Add the following configuration:
+
+```js
+module.exports = {
+  resolver: {
+    sourceExts: ['jsx', 'js']
+  }
+};
+```
+Now, you can **rename** `App.js` to `App.jsx` and restart the application server for it to take effect.
+
+## Part 2 -  Application state
+
+We want to manage the state of our application using Redux.
+We will add two libraries to our application. `redux` and `react-redux`.
+
+```
+$ yarn add redux react-redux
+```
