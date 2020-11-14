@@ -200,3 +200,51 @@ If you reload your application in the simulator, you should sew the value you ad
 ![](assets/01_simulator_app_title.png)
 
 ### Part 3 - Testing with Detox
+
+Let's get started with the setup by installing the Detox CLI
+
+```
+$ yarn global add detox-cli
+```
+
+Next, we need to add Detox and a few Expo integration packages to the project:
+```
+$ yarn add -D detox detox-expo-helpers expo-detox-hook jest-expo
+```
+
+Let's have another round of configuration chors to get Detox set up and ready to go.
+
+One of the first things we need to do is to download a built version of the Expo iOS app that Detox can use to hook into. Point your browser to the [Expo Tools](https://expo.io/tools#client) page and click the “Download IPA” link. Expand the downloaded archive, and change the name of the folder to “Exponent.app”. Create a folder named `bin` folder in your projects root folder, and move `Exponent.app` folder into it.
+
+```
+.
+├── bin
+│   └── Exponent.app
+```
+### Git Large File Storage (LFS)
+
+The  `Exponent.app` folder is quite big, and will cause problems for you if you check it in as it is into Git. There are 2 possible scenarios to deal with it.
+1. Exclude the folder from Git in your `.gitignore` and have every developer go through the process of downloading the app themselves.
+2. Make use of Large File Storage mechanism in Git and check the folder in to Git as usual.
+
+**For learning purposes, we will go over the LFS solution, but feel free to omit this step and got with scenario 1 if you wish.**
+
+Git Large File Storage (LFS) replaces large files such as audio samples, videos, datasets, and graphics with text pointers inside Git, while storing the file contents on a remote server like GitHub.com or GitHub Enterprise.
+
+You can install LFS using Homebrew:
+```
+$ brew install git-lfs
+```
+Once the package is installed, you need to run the following command to add it to your git configuration:
+
+```
+$ git lfs install
+```
+
+Now, let's tell LFS that we want to track The `Exponent.app` folder:
+
+```
+$ git lfs track "Exponent.app"
+```
+That will create a new file in our root folder named `.gitattributes`. Make sure to stage it and make a commit. Pushingg up to GitHub should not pose a problem now.
+

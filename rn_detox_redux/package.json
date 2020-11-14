@@ -18,7 +18,27 @@
     "redux": "^4.0.5"
   },
   "devDependencies": {
-    "@babel/core": "~7.9.0"
+    "@babel/core": "~7.9.0",
+    "detox": "^17.11.4",
+    "detox-expo-helpers": "^0.6.0",
+    "expo-detox-hook": "^1.0.10",
+    "jest-expo": "^39.0.0"
   },
-  "private": true
+  "private": true,
+  "jest": {
+    "preset": "jest-expo"
+  },
+  "detox": {
+    "testRunner": "jest",
+    "runnerConfig": "e2e/config.json",
+    "configurations": {
+      "ios": {
+        "type": "ios.simulator",
+        "binaryPath": "bin/Exponent.app",
+        "device": {
+          "type": "iPhone 11"
+        }
+      }
+    }
+  }
 }
