@@ -154,5 +154,48 @@ export default configureStore
 ```
 
 #### Connecting the Redux parts with the app
-As the next step, we need to connect our application to the Redux store. We will do that in our applications main entry point (`index.js`) by importing the store configuration (from `state/store/configureStore.js`) and making use of the `Provider` component from the `react-redux`library we added before. The `Provider` component makes the Redux store available to any nested components. Please note the imports and the usage of the `configureStore()` in the code below.
+As the next step, we need to connect our application to the Redux store. We will do that in our applications main entry point (`index.js`) by importing the store configuration (from `state/store/configureStore.js`) and making use of the `Provider` component from the `react-redux`library we added before. The `Provider` component makes the Redux store available to any nested components. Please note the imports and the usage of the `React` library, `Provider` and `configureStore()` in the code below:
+
+```js
+import React from 'react';
+import { Provider } from 'react-redux'
+import configureStore from './state/store/configureStore';
+import { registerRootComponent } from 'expo';
+
+import App from './App';
+
+const store = configureStore();
+
+const ConnctedApp = () => <Provider store={store}><App /></Provider>
+
+registerRootComponent(ConnctedApp);
+```
+
+Please note how we pass in the `store` object to the `<Provider>` component as a propery (`props`) and use it as a wrapper around the `<App>` component. Also, please note that we **change** what componnt will become th root component of tha application - `registerRootComponent(App)` was changed to `registerRootComponent(ConnctedApp)`.
+
+#### Use state in a component
+
+If we move over to our App component (`App.jsx`) we can make use of the `useSelector` hook and subscribe to the value `appTitle` that we added to the applications state.
+
+Please note that the code example below anly reflects the neccessary **additions** and **changes**. As always, you have to make sure that you keep the relevant code that we choose to omit in code examples/snippets of this documentation.
+
+```js
+// omitted code...
+import { useSelector } from "react-redux";
+
+const App = () => {
+  const appTitle = useSelector(state => state.appTitle) // get the value from application state
+  return (
+    <View style={styles.container}>
+      <Text>{appTitle}</Text>
+      <StatusBar style="auto" />
+    </View>
+  );
+}
+```
+If you reload your application in the simulator, you should sew the value you added to the `appTitle` key in the `initialState` displayed on the view.
+
+![](assets/01_simulator_app_title.png)
+
+### Part 3 - Testing with Detox
 

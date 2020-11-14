@@ -1,11 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
+import { useSelector } from "react-redux";
 import { StyleSheet, Text, View } from 'react-native';
 
- const App = () => {
+const App = () => {
+  const appTitle = useSelector(state => state.appTitle)
   return (
     <View style={styles.container}>
-      <Text>Weather App</Text>
+      <Text>{appTitle}</Text>
       <StatusBar style="auto" />
     </View>
   );
