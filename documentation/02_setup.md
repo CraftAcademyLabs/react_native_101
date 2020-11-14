@@ -4,7 +4,7 @@ All development enviroments require initial configuration. Before we get started
 
 In this part of the documntation we will:
 1. create an React Native application using Expo CLI
-2. set up Application State using Readux
+2. set up Application State using Redux
 3. configure the testing framwork
 
 
@@ -13,7 +13,7 @@ In this part of the documntation we will:
 $ yarn global add expo-cli
 ```
 
-Try the Expo CLI in yourterminal by simply typing `expo`and hitting enter. You should get a list of expo commands available in the cli tool. If you don't, you will have to reconfigure your `yarn` installation or use `npm global` instead (see the "Toubleshooting" section of this documntation).
+Try the Expo CLI in your terminal by simply typing `expo` and hitting enter. You should get a list of  commands available in the cli-tool. If you don't, you will have to reconfigure your `yarn` setup or use `npm global` instead (see the "Toubleshooting" section of this documntation).
 
 Once the command has executed and all dependecies have been installed, this should result in th following output:
 
@@ -26,40 +26,40 @@ success Installed "expo-cli@3.28.5" with binaries:
 
 The version number of the installed application may differ on your system, of course.
 
-Let's use the Expo CLI to scaffold a React Native application. W do that by using the `expo init` command. We will be using a minimal template and NOT use Typescript in this example.
+Let's use the Expo CLI to scaffold a React Native application. We do that by using the `expo init` command. We choose to use a minimal template and NOT use Typescript in this example app.
 
 ```
 $ expo init --template blank rn_detox_redux
 ```
-Once the scaffolder is done with creating the app and installing th dependencies (it might take a while dependent on your computer's capacity and network connection speed), `cd` in into the newly created folder. Now, you can start your application in the phone simulator of your choice. When writing this documentatio, I was on an OSX based machine, so I will use the iPhone simulator.
+Once the scaffolder is done with creating the app and installing the dependencies (it might take a while dependent on your computer's capacity and network connection speed), `cd` into the newly created folder. Now, you can start your application in the phone simulator of your choice. When writing this documentatio, I was on an OsX based machine, so I will use the iPhone simulator.
 
-Just issue the following command in your terminal:
+Issue the following command in your terminal:
 ```
 $ yarn ios
 ```
 This starts the Metro bundler, essentially a HTTP server that compiles our code with Babel to target the latest JavaScript features.
-You will will notice that a nw browser window opens, and after a sshort while, once your new application has compiled, a phone simulator will appear and ventually display the app. All of this might take a while as there are many processes happening at the same time.
+You will will notice that a new browser window opens, and after a short while, once your new application has compiled, a phone simulator will appear and eventually display the app. All of this might take a while as there are many processes happening at the same time.
 
 ![](../documentation/assets/01_browser_expo_runner.png)
 
-**(Note: You can stop the runner with Control + C kys on a Mac)**
+**(Note: You can stop the runner with Control + C kys on a OsX)**
 The application that appears has only one view with som placeholder text in the center.
 
 ![](assets/01_simulator.png)
 
-The text on the view tells us to “Open up App.js to start working on your app!. So let's take a look at the code in our IDE (I'm using VSCode in this example). If you have your VSCode terminal command nabld, you can open the project directly from your terminal rompt. Otherwise, you will need to navigate to the project.
+The text on the view tells us to “Open up App.js to start working on your app!. So let's take a look at the code in our IDE (I'm using VSCode in this example). If you have your VSCode terminal command enabld, you can open the project directly from your terminal prompt. Otherwise, you will need to navigate to the project from within VSCodee and open it manually.
 
 ```
 $ code .
 ```
 ![](assets/01_vscode_screen.png)
 
-Change some text and run see them appear on the viw in the simulator. You can always reload the app (and perform other actions that we will cover later on in this documentation) by accessing the Control Panel in your xpo app. Press Control Command Z on your keyboard to access the controls and klick on 'Reload':
+Change some text and run see it appear on the view in the simulator. You can always reload the app (and perform other actions that we will cover later on in this documentation) by accessing the Control Panel in your expo app. Press **Control Command Z** on your keyboard while the simulator window is in focus to access the controls and click on 'Reload':
 
 ![](assets/01_simulator_with_commands_panel.png)
 
 ### JSX support
-I like to name my components with th `.jsx` suffix. In order for that to work, we need to modify Metro configuration and tell it to look for **both** `.js` files as well as `.jsx`. This is pretty straight-forward.
+I like to name my components with the `.jsx` suffix. In order for that to work, we need to modify Metro configuration and tell it to look for **both** `.js` files **as well as** `.jsx`. This is pretty straight-forward, so let's go ahead and do this.
 
 Create a file named `metro.config.json` in your projects root folder. Add the following configuration:
 
@@ -70,13 +70,15 @@ module.exports = {
   }
 };
 ```
-Now, you can **rename** `App.js` to `App.jsx` and restart the application server for it to take effect.
+Now, you can **rename** `App.js` to `App.jsx` and restart the application server for thee changes to take effect.
 
 ## Part 2 -  Application state
 
-We want to manage the state of our application using Redux. For that to happen, we need to take control of the application's configuration in a way that differs a bit from what the scaffolded app gives us. So, more configuration...
+We want to manage the state of our application using Redux. For that to happen, we need to take control of the application's configuration in a way that differs a bit from what the scaffolded app gives us. We will also chagne the application structure a bit, to better suite our needs.
 
-We will also chagne the application structure a bit, to better suite our needs. First of all, we want to create a new file in the projects root folder and name it `index.js`. This file need to have the following content:
+So, more configuration...
+
+First of all, we want to create a new file in the projects root folder and name it `index.js`. This file need to have the following content:
 
 ```js
 import { registerRootComponent } from 'expo';
@@ -94,7 +96,7 @@ We also need to modify the `"main"` key in our `package.json` to point to that `
 ```
 Make sure to restart your application server and check if everything is working at this stage. You don't want to  move on before you know that you are in a good state.
 
-Furthermore, we want to organize our code in some subfolders. We might as well create them now. Create folders named `components`, `modules` and `state` in your projets root folder. In the two first folders, we only want to add a hidded file named `.girkeep` (this file is used to Git that it should track the folder even if it is empty), but in the `state` folder we want to create two subdirectories: `store` and `reducers`
+Furthermore, we want to organize our code in some subfolders. We might as well create them now. Create folders named `components`, `modules` and `state` in your projets root folder. In the two first folders, we only want to add a hidded file named `.gitkeep` (this file is used to Git that it should track the folder even if it is empty), but in the `state` folder we want to create two subdirectories: `store` and `reducers`
 
  The structure should look like this once you are done:
 
@@ -198,4 +200,3 @@ If you reload your application in the simulator, you should sew the value you ad
 ![](assets/01_simulator_app_title.png)
 
 ### Part 3 - Testing with Detox
-
