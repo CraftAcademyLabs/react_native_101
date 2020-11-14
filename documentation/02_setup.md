@@ -74,9 +74,85 @@ Now, you can **rename** `App.js` to `App.jsx` and restart the application server
 
 ## Part 2 -  Application state
 
-We want to manage the state of our application using Redux.
-We will add two libraries to our application. `redux` and `react-redux`.
+We want to manage the state of our application using Redux. For that to happen, we need to take control of the application's configuration in a way that differs a bit from what the scaffolded app gives us. So, more configuration...
+
+We will also chagne the application structure a bit, to better suite our needs. First of all, we want to create a new file in the projects root folder and name it `index.js`. This file need to have the following content:
+
+```js
+import { registerRootComponent } from 'expo';
+import App from './App';
+
+registerRootComponent(App);
+```
+
+(We will get back to this file and modify it's content in a short while.)
+
+We also need to modify the `"main"` key in our `package.json` to point to that `index.js` file (this key already exists, so this is a **change** not an **addition**):
+
+```json
+"main": "index.js",
+```
+Make sure to restart your application server and check if everything is working at this stage. You don't want to  move on before you know that you are in a good state.
+
+Furthermore, we want to organize our code in some subfolders. We might as well create them now. Create folders named `components`, `modules` and `state` in your projets root folder. In the two first folders, we only want to add a hidded file named `.girkeep` (this file is used to Git that it should track the folder even if it is empty), but in the `state` folder we want to create two subdirectories: `store` and `reducers`
+
+ The structure should look like this once you are done:
+
+
+```
+├── App.jsx
+├── assets
+├── components
+├── modules
+└── state
+    ├── reducers
+    └── store
+```
+
+Okay, naw that we have these chores behind us, we can move on with adding and configuring Redux. We will add two libraries to our application. `redux` and `react-redux`.
 
 ```
 $ yarn add redux react-redux
 ```
+
+#### Initial state
+Let’s start with the initial state. For demonstration purposes, we want to set an application name in our state and display it on our view. We can do that by setting an initial state that we will place in a separate file in the `state/store` folder:
+
+```js
+// /state/store/initialState.js
+const initialState = {
+  appTitle: 'Mobile Weather'
+}
+export default initialState
+```
+
+#### The Reducer
+In Redux, state is managed by reducer functions. As the next step, we will create a simple reducer that will load the initial state and return it to whoever asks for/subscribes to it:
+
+```js
+// /state/reducers/rootReducer.js
+import initialState from '../store/initialState'
+
+const rootReducer = (state = initialState) => {
+  return state
+}
+export default rootReducer
+```
+
+#### The Global Store
+And we will set up and configure the global store object:
+
+```js
+// src/state/store/configureStore.js
+import { createStore } from 'redux';
+import rootReducer from '../reducers/rootReducer'
+
+const configureStore = () => {
+  return createStore(rootReducer);
+}
+export default configureStore
+```
+
+#### Connecting the Redux parts with the app
+As the next step, we need to connect our application to the Redux store. We will do that in our applications main entry point (`index.js`) by importing the store configuration (from `state/store/configureStore.js`) and making use of the `Provider` component from the `react-redux`library we added before. The `Provider` component makes the Redux store available to any nested components. Please note the imports and the usage of the `configureStore()` in the code below.
+
