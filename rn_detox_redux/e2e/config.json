@@ -4,6 +4,6 @@
   "setupFilesAfterEnv": [
     "./config/environment.js"
   ],
-  "testRegex": "\\.feature\\.js$",
-  "verbose": false
+  "testRegex": "(/features/.*|(\\.|/)(features|e2e))\\.(js?|ts?)$",
+  "verbose": true
 }

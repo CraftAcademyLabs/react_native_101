@@ -1,5 +1,7 @@
 import { cleanup, init } from "detox";
 import adapter from "detox/runners/jest/adapter";
+import { reloadApp } from 'detox-expo-helpers';
+
 // const { mockServer } = require('./mockServer')
 
 let server
@@ -13,6 +15,7 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await adapter.beforeEach();
+  await reloadApp()
 });
 
 

@@ -244,7 +244,136 @@ $ git lfs install
 Now, let's tell LFS that we want to track The `Exponent.app` folder:
 
 ```
-$ git lfs track "Exponent.app"
+$ git lfs track "**/bin/Exponent.app"
 ```
 That will create a new file in our root folder named `.gitattributes`. Make sure to stage it and make a commit. Pushingg up to GitHub should not pose a problem now.
 
+### Detox configuration
+We have a few more chres to get out of our way. We ned to prepare our test runner and configure Detox. According to the documentation for Detox, we sshould be able to run an installeer to go through this step, but I've found that I have to make a lot of madifications to the standarlized configuration, that we might as well go through this step manually.
+
+Let'ss start with addingg some Detox configuration to `package.json`:
+
+```json
+"detox": {
+    "testRunner": "jest",
+    "runnerConfig": "e2e/config.json",
+    "configurations": {
+      "ios": {
+        "type": "ios.simulator",
+        "binaryPath": "bin/Exponent.app",
+        "device": {
+          "type": "iPhone 11"
+        }
+      }
+    }
+  }
+```
+**Note: In this documentation, we'll only be covering the iOS configuration for Detox. A qiock Google search will lead you to a configuration example for Android.**
+
+We will now create a new folder (in the projects root) that we will name `e2e`. Inside that folder, we will create 2 subfolders (`config` and `features`) as well as 1 file named `config.json`.
+
+```
+.
+├── e2e
+│   ├── config.json
+│   ├── config
+│   ├── features
+│   └── mocks
+```
+
+In `config.json` we'll add the following:
+```json
+{
+  "preset": "jest-expo",
+  "testEnvironment": "node",
+  "setupFilesAfterEnv": [
+    "./config/environment.js"
+  ],
+  "testRegex": "(/features/.*|(\\.|/)(features|e2e))\\.(js?|ts?)$",
+  "verbose": true
+}
+```
+
+Moving on to `./config/environment.js`, and the setup of th test enviroment itself:
+
+```js
+import { cleanup, init } from "detox";
+import { reloadApp } from 'detox-expo-helpers';
+import adapter from "detox/runners/jest/adapter";
+
+jest.setTimeout(120000);
+jasmine.getEnv().addReporter(adapter);
+
+beforeAll(async () => {
+  await init();
+});
+
+beforeEach(async () => {
+  await adapter.beforeEach();
+  await reloadApp()
+});
+
+afterAll(async () => {
+  await adapter.afterAll();
+  await cleanup();
+});
+```
+
+And, finally, we are ready to write our first test. Lets create a new file in the `features` subfolder and give it a name of `displayAppTitle.feature.js`. We'll bee checking for the application title we added to the view a while ago.
+
+```js
+describe('Example', () => {
+
+  it('is expected to display title on welcome screen', async () => {
+    await expect(
+      element(by.label('Mobile Weather')).atIndex(1)
+    ).toBeVisible();
+  });
+
+});
+
+```
+We can run the test from our terminal:
+```
+$ detox test
+```
+![](./assets/01_terminal_green_tests_vscode_simulator.png)
+That's it in terms of configuration. It was a handful to say the least, but at this stage, we have a working setup that will allow us to work in BDD.
+
+### Detox matchers, actions and expectations
+
+Detox uses **matchers** to locate certain UI elements. Matchers can find elements in your app that match one or more properties. The different methods that are available to use are:
+- `by.id()`
+- `by.label()`
+- `by.text()`
+- `by.type()`
+- `by.traits()`
+It is recommended to match elements `by.id()` because it is more resilient to layout restructuring and text/language changes.
+
+Detox also uses **actions** to emulate user interactions and behavior with elements we want to find and match. The different methods that are available to use are:
+- `.tap()`
+- `.longPress()`
+- `.multiTap()`
+- `.tapAtPoint()`
+- `.tapBackspaceKey()`
+- `.tapReturnKey()`
+- `.typeText()`
+- `.replaceText()`
+- `.clearText()`
+- `.scroll()`
+- `.scrollTo()`
+- `.swipe()`
+- `.setColumnToValue()` iOS only
+- `.pinchWithAngle()` iOS only
+- `.setDatePickerDate()` iOS only
+
+Detox uses **expectations** to verify values on those particular elements that we are working with. It verifies if a certain value is as expected be. The different methods that are available to use are:
+
+- `.toBeVisible()`
+- `.toBeNotVisible()`
+- `.toExist()`
+- `.toNotExist()`
+- `.toHaveText()`
+- `.toHaveLabel()`
+- `.toHaveId()`
+- `.toHaveValue()`
