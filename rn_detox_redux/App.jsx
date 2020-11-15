@@ -1,14 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { useSelector } from "react-redux";
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import ApplicationHeader from "./components/ApplicationHeader";
 
 const App = () => {
-  const appTitle = useSelector(state => state.appTitle)
   return (
     <View style={styles.container}>
-      <Text>{appTitle}</Text>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
+      <ApplicationHeader />
     </View>
   );
 }
@@ -17,8 +16,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
 
