@@ -12,7 +12,7 @@ const WeatherView = () => {
       }
       {
         currentLocation &&
-        <Text>You are at {currentLocation.coords.latitude} lat and {currentLocation.coords.longitude}</Text>
+        <Text testID='weatherInfo'>You are at {currentLocation.coords.latitude.toFixed(2)} lat and {currentLocation.coords.longitude.toFixed(2)} long</Text>
       }
     </View>
   )

@@ -5,23 +5,27 @@ import { StyleSheet, View } from 'react-native';
 import ApplicationHeader from "./components/ApplicationHeader";
 import WeatherView from "./components/WeatherView";
 import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
 
 const App = () => {
   const dispatch = useDispatch()
   const getLocation = async () => {
-    let { status } = await Location.requestPermissionsAsync();
-    if (status === 'granted' ) {
-      let location = await Location.getCurrentPositionAsync();
-      console.table(location)
-      console.warn(status)
-      dispatch({ type: 'SET_LOCATION', payload: location })
+    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status === 'granted') {
+      let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
+      return location
     } else {
-      console.error(status)
-      dispatch({ type: 'SET_ERROR_MESSAGE', payload: 'Permission to access location was denied' });
+      throw new Error('Permission to access location was denied')
     }
   }
   useEffect(() => {
     getLocation()
+      .then(location => {
+        dispatch({ type: 'SET_LOCATION', payload: location })
+      })
+      .catch(error => {
+        dispatch({ type: 'SET_ERROR_MESSAGE', payload: error.message });
+      })
   }, []);
   return (
     <View style={styles.container}>
