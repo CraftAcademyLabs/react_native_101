@@ -7,6 +7,6 @@ import App from './App';
 
 const store = configureStore();
 
-const ConnctedApp = () => <Provider store={store}><App /></Provider>
+const ConnectedApp = () => <Provider store={store}><App /></Provider>
 
-registerRootComponent(ConnctedApp);
+registerRootComponent(ConnectedApp);

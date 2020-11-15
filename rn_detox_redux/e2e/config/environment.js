@@ -15,7 +15,9 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await adapter.beforeEach();
-  await reloadApp()
+  await reloadApp({
+    permissions: { location: 'inuse', notifications: 'YES' },
+  })
 });
 
 

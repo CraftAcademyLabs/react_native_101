@@ -69,7 +69,7 @@ Consequently, we want to modify the `<App>` component to display the header, but
 
 On the other hand, we need to import the `<AppplicationHeader>` component and make sure that it is rendered.
 
-That should be it. Did I miss something? The `<App>` component should look something like that after our refactorings:
+That should be it. Did I miss something? The `<App>` component should look something like this after our refactorings:
 
 ```js
 import { StatusBar } from 'expo-status-bar';
@@ -98,7 +98,7 @@ export default App
 
 ![](assets/02_simulator_with_basic_appbar.png)
 
-Another version of the `<AllicationHeader>` component, but with some styling addad to it might look like this:
+Another version of the `<ApplicationHeader>` component, but with some styling addad to it, might look like this:
 
 ```js
 import React from 'react'
@@ -128,3 +128,9 @@ Please examine the changes we do to this component before implementing this. Why
 ![](assets/02_simulator_with_styled_appbar.png)
 
 ### Part 2 - The Location
+
+One of our challenges, befor we even can begin thinking about displaying any weather information, is to figure out what to look for. What location are we interested in? There are countless directions to go with this, but for learning purposes, w will start with asking the devise where it is currently located.
+
+```
+$ expo install expo-location
+```
