@@ -10,10 +10,13 @@ const App = () => {
   const dispatch = useDispatch()
   const getLocation = async () => {
     let { status } = await Location.requestPermissionsAsync();
-    if (status === 'granted') {
+    if (status === 'granted' ) {
       let location = await Location.getCurrentPositionAsync();
+      console.table(location)
+      console.warn(status)
       dispatch({ type: 'SET_LOCATION', payload: location })
     } else {
+      console.error(status)
       dispatch({ type: 'SET_ERROR_MESSAGE', payload: 'Permission to access location was denied' });
     }
   }

@@ -16,8 +16,12 @@ beforeAll(async () => {
 beforeEach(async () => {
   await adapter.beforeEach();
   await reloadApp({
-    permissions: { location: 'inuse', notifications: 'YES' },
+    permissions: { location: 'inuse' },
   })
+  // await device.launchApp({
+  //   permissions: { location: 'always' },
+  // })
+  // await reloadApp()
 });
 
 
