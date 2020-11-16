@@ -159,7 +159,7 @@ There's another package that we want to install, that will come in handy when we
 $ yarn add -D child-process-promise
 ```
 
-Anothr packade that we need is provided for us by the developers at Lyft and distributed using Homebrew, and gives us the possibility to pre-set a location of the iOS Simulator using an address or latitude and longitude coordinates.
+Another packade that we need is provided for us by the developers at Lyft and distributed using Homebrew, and gives us the possibility to pre-set a location of the iOS Simulator using an address or latitude and longitude coordinates.
 
 ```
 $ brew install lyft/formulae/set-simulator-location
@@ -208,7 +208,7 @@ What happends here? We import the two packages that will allow us to set the per
 
 The status of the permission we are looking for is `'granted'`. If it is set to `'granted'`, we'll go ahead and ask the device for its current location. If not, we'll throw an error.
 
-Next, we need to modify our `App.jsx` to make use of the `getLocation` function we just created, and invoke it when the component is mounted. For that purpose, we'll be using the `useEffect` hook from React. Another thing that we'll make use of is our application state and the `useDispatch` hook from `react-redux`, to save the location or the rror message the `getLocation` might return.
+Next, we need to modify our `App.jsx` to make use of the `getLocation()` function we just created, and invoke it when the component is mounted. For that purpose, we'll be using the `useEffect` hook from React. Another thing that we'll make use of is our application state and the `useDispatch` hook from `react-redux`, to save the location or the error message the `getLocation` might return.
 
 Please note that I only include the additions or changes to the code in the snippet below, and omit the parts that stay the same from previous implementation.
 
@@ -233,7 +233,7 @@ const App = () => {
 
 ```
 
-As mentioned before, we have two possible outcomes of `getLocation` function. We either get the location, or we get an error message. Whatever happends, we want to deal with it. My idea is that we dispatch an action that saves the data in out appliction state. Hence the `'SET_LOCATION'`, and the `'SET_ERROR_MESSAGE'` actions.
+As mentioned before, we have two possible outcomes of the `getLocation()` function. We either get the location, or we get an error message. Whatever happends, we want to deal with it. My idea is that we dispatch an action that saves the data in out appliction state. Hence the `'SET_LOCATION'`, and the `'SET_ERROR_MESSAGE'` actions.
 
 This means that we need to modify our `rootReducer` to deal with thse actions. If you recall, the only thing our reducer do at the moment, i to return the `initialState`.  We will change that behaviour now.
 
