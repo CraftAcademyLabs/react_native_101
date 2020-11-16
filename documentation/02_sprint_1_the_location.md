@@ -1,6 +1,6 @@
-## Building functionality
+## Getting the location of the device
 
-We will make use of the OpenWeatherMap API to get information about the weather conditions at any given location.
+The purpose of our application is to tell the user the weather conditions. In order to do that, we will make use of the OpenWeatherMap API to get information about the weather conditions at any given location.
 
 ![](assets/02_browser_open_weather_map_website.png)
 
@@ -28,7 +28,7 @@ But lets get started with adding a bit of styling to our application. We want to
 
 ### Part 1 - Styling with React Active Paper
 
-React Nativ Paper is a collection of customizable components for React Native that follow Google’s Material Design guidelines. Rather than re invnting th wheel and style every part of our application ourselves, we can leverage on th hard work of othrs to get wonderful results.
+React Native Paper is a collection of customizable components for React Native that follow Google’s Material Design guidelines. Rather than re invnting th wheel and style every part of our application ourselves, we can leverage on th hard work of othrs to get wonderful results.
 
 Install the libarary in your project.
 
@@ -65,7 +65,7 @@ const ApplicationHeader = () => {
 export default ApplicationHeader
 ```
 
-Consequently, we want to modify the `<App>` component to display the header, but also relieve it from the responsibility of displaying the `appTitle` dirctly. Since we no longer need that prop, we can safely reemove the `useSelector` import, and get rid of the `appTitle` constant. We also no longer need to import the `<Text>` component from `react-native`. Finally, we want to modify our stylesheet and get rid of the vertical and horizontal centering.
+Consequently, we want to modify the `<App>` component to display the header, but also relieve it from the responsibility of displaying the `appTitle` dirctly. Since we no longer need that prop, we can safely remove the `useSelector` import, and get rid of the `appTitle` constant. We also no longer need to import the `<Text>` component from `react-native`. Finally, we want to modify our stylesheet and get rid of the vertical and horizontal centering.
 
 On the other hand, we need to import the `<AppplicationHeader>` component and make sure that it is rendered.
 
@@ -113,7 +113,10 @@ const ApplicationHeader = () => {
     <Appbar.Header style={{ backgroundColor: '#69388C' }}>
       <Appbar.Content
         title={
-          <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{appTitle.toUpperCase()}</Text>
+          <Text
+            style={{ fontSize: 24, fontWeight: 'bold' }}>
+            {appTitle.toUpperCase()}
+          </Text>
         }
       />
     </Appbar.Header>
@@ -131,13 +134,13 @@ Please examine the changes we do to this component before implementing this. Why
 
 One of our challenges, before we even can begin thinking about displaying any weather information, is to figure out what to look for. What location are we interested in? There are countless directions we coult go with this, but for learning purposes, we will start with asking the devise where it is currently located.
 
-In order to do that, we will need to understand the basics of **Privacy settings** on mobile operating systems in general, and iOS in perticular. Privacy settings in iOS help you control  which apps have access to information stored on your device. There are many services that you can control in order to retain your privacy. **Location Service** is just one of them.
+In order to do that, we will need to understand the basics of **Privacy settings** on mobile operating systems in general, and in iOS in perticular. Privacy settings in iOS help you control  which apps have access to information stored on your device. There are many services that you can control in order to retain your privacy. **Location Service** is just one of them.
 
 With your permission, Location Services will allow apps and websites (including Maps, Camera, Weather, and other apps) to use information from Global Positioning System (GPS) networks, and Bluetooth to determine your approximate location.
 
 The first time an app tries to access your location, it must ask for your permission. You see a prompt explaining which app is asking for permission to use your location as well as the app developer's reason for requesting it.
 
-In our casee, once we set up the functionality that will make use of the Location Service, you will see the following prompt (but we are **NOT** there yet).
+In our case, once we set up the functionality that will make use of the Location Service, you will see the following prompt (but we are **NOT** there yet).
 
 ![](./assets/02_simulator_allow_location_service.png)
 
@@ -156,7 +159,7 @@ There's another package that we want to install, that will come in handy when we
 $ yarn add -D child-process-promise
 ```
 
-Anothr packade that we need is handled by Brew, and gives us the possibility to pre-set a location of the iOS Simulator using an address or latitude and longitude coordinates.
+Anothr packade that we need is provided for us by the developers at Lyft and distributed using Homebrew, and gives us the possibility to pre-set a location of the iOS Simulator using an address or latitude and longitude coordinates.
 
 ```
 $ brew install lyft/formulae/set-simulator-location
@@ -255,9 +258,11 @@ const rootReducer = (state = initialState, action) => {
 }
 ```
 
-Now, our state will either hold the `currentLocation` or `errorMessage` keys with the values we dispatched from our component. Remember to keep running your tests. I know it's time-consuming and annoying when they go red but do it anyway. It's a good habit.
+Now, our state will either hold the `currentLocation` or `errorMessage` keys with the values we dispatched from our component.
 
-So, let's put the values we added to state to use. Create a new component and call it `WatherView.jsx`. We will create a new functional component that will subscribe to the `currentLocation` and `errorMessage` values (making use of `useSelector` as we did before).
+**Remember to keep running your tests. I know it's time-consuming and annoying when they go red but do it anyway. It's a good habit.**
+
+So, let's put the values we added to state to use. Create a new file in the `components` folder and call it `WatherView.jsx`. We will create a new functional component that will subscribe to the `currentLocation` and `errorMessage` values (making use of `useSelector` hook as we did before).
 
 ```js
 import React from 'react'
@@ -286,7 +291,7 @@ export default WeatherView
 const styles = StyleSheet.create({})
 ```
 
-We need to `import` this omponent into our `<App>` component and display it. Make the appropriate change in `App.jsx`:
+We need to `import` this component into our `<App>` component and display it. Make the appropriate change in `App.jsx`:
 
 ```js
 import WeatherView from "./components/WeatherView";
@@ -307,9 +312,9 @@ If you run your tests now, they will still fail, although if you run the applica
 
 ![](./assets/02_simulator_location_settings.png)
 
-Here's whre the `set-simulator-location` and `child-process-promise` comes into play.
+Here's where the `set-simulator-location` and `child-process-promise` comes into play.
 
-We need to tell our simulator that we want it so start with a pre-set location. In order to do that we need to execute a command from our Detox setup. It's not that tricky tricky, but to be on the safe side, I'll include the whole `e2e/conffig/nvironment.js` file as it should look after the modifications are done.
+We need to tell our simulator that we want it so start with a pre-set location. In order to do that we need to execute a command from our Detox setup. It's not that super tricky, but to be on the safe side, I'll include the whole `e2e/conffig/nvironment.js` file as it should look after the modifications are done.
 
 
 ```js
@@ -357,3 +362,11 @@ beforeEach(async () => {
 ```
 
 Why do we use `try` with an empty `catch` block? Well, the permission is only needed once and the dialog window might not pop up every time.
+
+If we run all our tests now, we should be going green.
+
+
+![](./assets/02_desktop_passing_tests.png)
+
+
+**The next step is to make use of the location data we just got, and get the weather API to tell us what we need to know in order to display relevant information to our users.**
