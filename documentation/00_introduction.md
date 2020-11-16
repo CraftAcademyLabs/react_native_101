@@ -1,6 +1,6 @@
 ## React Native 101
 
-In this documentation we will be creating an  application that will display weather information. As we move along, we will make use of some agile methodologies, such as iterative and incremental design, combined with best practices regarding, bbehaviour driven design, testing, and code quality.
+In this documentation we will be creating an  application that will display weather information. As we move along, we will make use of some agile methodologies, such as iterative and incremental design, combined with best practices regarding, behaviour driven design, testing, and code quality.
 
 We will make use of several technologies and libraries
 - React Native
