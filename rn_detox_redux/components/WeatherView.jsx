@@ -1,6 +1,5 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-
 import { StyleSheet, Text, View } from 'react-native'
 
 const WeatherView = () => {
@@ -12,7 +11,9 @@ const WeatherView = () => {
       }
       {
         currentLocation &&
-        <Text testID='weatherInfo'>You are at {currentLocation.coords.latitude.toFixed(2)} lat and {currentLocation.coords.longitude.toFixed(2)} long</Text>
+        <Text testID='weatherInfo'>
+          You are at {currentLocation.coords.latitude.toFixed(2)} lat and {currentLocation.coords.longitude.toFixed(2)} long
+        </Text>
       }
     </View>
   )

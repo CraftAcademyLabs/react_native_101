@@ -142,7 +142,7 @@ In our casee, once we set up the functionality that will make use of the Locatio
 ![](./assets/02_simulator_allow_location_service.png)
 
 
-We will mak euse of 2 packages from Expo. One that deals with the [Location Service](https://docs.expo.io/versions/latest/sdk/location/), and another that allows us to tap into the [Persmissions](https://docs.expo.io/versions/latest/sdk/permissions/) flow.
+We will make use of two different packages provided for us by Expo. One that deals with the [Location Service](https://docs.expo.io/versions/latest/sdk/location/), and another one that allows us to tap into the [Persmissions](https://docs.expo.io/versions/latest/sdk/permissions/) flow.
 
 We add these packages to our app:
 
@@ -150,13 +150,13 @@ We add these packages to our app:
 $ expo install expo-location expo-permissions
 ```
 
-There's another package that we want to install and that will come in handy when we test our application. A bit over simplified, it will allow us to execute commands from within our program. When the time comes, we will use it to modify our iOS Simulator among other things.
+There's another package that we want to install, that will come in handy when we test our application. A bit simplified, it will allow us to execute commands from within our program. When the time comes, we will use it to modify our iOS Simulator (among other things).
 
 ```
 $ yarn add -D child-process-promise
 ```
 
-Anothr packade that we need is handled by Brew, and gives us the possibility to pre-set a location of iOS Simulator using an address of latitude and longitude coordinates.
+Anothr packade that we need is handled by Brew, and gives us the possibility to pre-set a location of the iOS Simulator using an address or latitude and longitude coordinates.
 
 ```
 $ brew install lyft/formulae/set-simulator-location
@@ -164,7 +164,196 @@ $ brew install lyft/formulae/set-simulator-location
 
 Okay, we have the necessary tools to make a determination of where in the world the devise is.
 
+Let's create a new test file and call it `displayWeatherInformation.js`. Here is the code we want to put in it:
+
+```js
+describe('Application', () => {
+
+  it('is expected to display location information', async () => {
+    let expectedText = 'You are at 57.71 lat and 11.96 long'
+    await waitFor(element(by.id('weatherInfo'))).toBeVisible().withTimeout(2000);
+    await expect(
+      element(by.id('weatherInfo'))
+    ).toHaveLabel(expectedText);
+  });
+
+});
+```
+Please note the use of `waitFor()` that is followed by `withTimeout()`. This is an important step. We want Detox to wait for a while before it moves over to the next line of code, in order to give the application enough time to actually get the location and dispalay it in the view. Another important thing is that we are assuming that we will have an element with `testId` value set to `weatherInfo` and that it will have a text value of `'You are at 57.71 lat and 11.96 long'`. Those coordinates are in Gothenburg. It will be a challenge to make this tast pass! Let's get after it.
+
+
 We will start by creating a new file in the `modules` folder. We will call it `getLocation.js`
 
 ```js
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
+
+const getLocation = async () => {
+  const { status } = await Permissions.askAsync(Permissions.LOCATION);
+  if (status === 'granted') {
+    let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
+    return location
+  } else {
+    throw new Error('Permission to access location was denied')
+  }
+}
+
+export default getLocation
 ```
+
+What happends here? We import the two packages that will allow us to set the permission to use the Location Service and to actually query the device for its current position.
+
+The status of the permission we are looking for is `'granted'`. If it is set to `'granted'`, we'll go ahead and ask the device for its current location. If not, we'll throw an error.
+
+Next, we need to modify our `App.jsx` to make use of the `getLocation` function we just created, and invoke it when the component is mounted. For that purpose, we'll be using the `useEffect` hook from React. Another thing that we'll make use of is our application state and the `useDispatch` hook from `react-redux`, to save the location or the rror message the `getLocation` might return.
+
+Please note that I only include the additions or changes to the code in the snippet below, and omit the parts that stay the same from previous implementation.
+
+```js
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux'
+import getLocation from "./modules/getLocation";
+
+const App = () => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    getLocation()
+      .then(location => {
+        dispatch({ type: 'SET_LOCATION', payload: location })
+      })
+      .catch(error => {
+        dispatch({ type: 'SET_ERROR_MESSAGE', payload: error.message });
+      })
+  }, []);
+}
+
+```
+
+As mentioned before, we have two possible outcomes of `getLocation` function. We either get the location, or we get an error message. Whatever happends, we want to deal with it. My idea is that we dispatch an action that saves the data in out appliction state. Hence the `'SET_LOCATION'`, and the `'SET_ERROR_MESSAGE'` actions.
+
+This means that we need to modify our `rootReducer` to deal with thse actions. If you recall, the only thing our reducer do at the moment, i to return the `initialState`.  We will change that behaviour now.
+
+Let's open the `state/reducers/rootReducer.js` file, and make the following modifications:
+
+```js
+const rootReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'SET_LOCATION':
+      return {
+        ...state,
+        currentLocation: action.payload
+      }
+    case 'SET_ERROR_MESSAGE':
+      return {
+        ...state,
+        errorMessage: action.payload
+      }
+    default:
+      return state
+  }
+}
+```
+
+Now, our state will either hold the `currentLocation` or `errorMessage` keys with the values we dispatched from our component. Remember to keep running your tests. I know it's time-consuming and annoying when they go red but do it anyway. It's a good habit.
+
+So, let's put the values we added to state to use. Create a new component and call it `WatherView.jsx`. We will create a new functional component that will subscribe to the `currentLocation` and `errorMessage` values (making use of `useSelector` as we did before).
+
+```js
+import React from 'react'
+import { useSelector } from 'react-redux'
+import { StyleSheet, Text, View } from 'react-native'
+
+const WeatherView = () => {
+  const { currentLocation, errorMessage } = useSelector(state => state)
+  return (
+    <View>
+      { errorMessage &&
+        <Text>{errorMessage}</Text>
+      }
+      {
+        currentLocation &&
+        <Text testID='weatherInfo'>
+          You are at {currentLocation.coords.latitude.toFixed(2)} lat and {currentLocation.coords.longitude.toFixed(2)} long
+        </Text>
+      }
+    </View>
+  )
+}
+
+export default WeatherView
+
+const styles = StyleSheet.create({})
+```
+
+We need to `import` this omponent into our `<App>` component and display it. Make the appropriate change in `App.jsx`:
+
+```js
+import WeatherView from "./components/WeatherView";
+```
+And in the `return` of the `<App>` component:
+
+```js
+  return (
+    <View style={styles.container}>
+      <StatusBar style="light" />
+      <ApplicationHeader />
+      <WeatherView />
+    </View>
+  );
+```
+
+If you run your tests now, they will still fail, although if you run the application manually in the simulator, you should see the location. You might have to navigate to **Features -> Location** and choose a **Custom Location** or **Apple** to actually set the location to something other than `null`
+
+![](./assets/02_simulator_location_settings.png)
+
+Here's whre the `set-simulator-location` and `child-process-promise` comes into play.
+
+We need to tell our simulator that we want it so start with a pre-set location. In order to do that we need to execute a command from our Detox setup. It's not that tricky tricky, but to be on the safe side, I'll include the whole `e2e/conffig/nvironment.js` file as it should look after the modifications are done.
+
+
+```js
+import { cleanup, init } from "detox";
+import adapter from "detox/runners/jest/adapter";
+import { reloadApp } from 'detox-expo-helpers';
+import { exec } from "child-process-promise";
+
+jest.setTimeout(120000);
+jasmine.getEnv().addReporter(adapter);
+
+beforeAll(async () => {
+  await init()
+});
+
+beforeEach(async () => {
+  await adapter.beforeEach();
+  await reloadApp({
+    permissions: { location: 'inuse' },
+  })
+  exec('set-simulator-location -c 57.7132122 11.96223453')
+});
+
+afterAll(async () => {
+  await adapter.afterAll();
+  await cleanup();
+});
+```
+
+The important parts are:
+* the `import` and use of the `exec` function we get from `child-process-promise`. We use it to execute the `set-simulator-location` command.
+* The options we pass in to `reloadApp` telling the simulator that we want to permit the use of the Location Service.
+
+Despite this, whenever we run our tests, the simulator will display a pop-up asking us for permission to allow the user currently running the application to access Location. This is a behaviour of the Exponent.app and we nd to deal with it.
+
+Modify your tests by adding a `beforeEach` block (inside the `describe` block):
+
+```js
+beforeEach(async () => {
+  try {
+    await element(by.label('Allow')).atIndex(1).tap()
+  }
+  catch (e) { }
+});
+```
+
+Why do we use `try` with an empty `catch` block? Well, the permission is only needed once and the dialog window might not pop up every time.

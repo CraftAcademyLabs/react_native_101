@@ -15,9 +15,9 @@ beforeAll(async () => {
 beforeEach(async () => {
   await adapter.beforeEach();
   await reloadApp({
-
+    permissions: { location: 'inuse' },
   })
-  await reloadApp()
+  // await reloadApp()
   exec('set-simulator-location -c 57.7132122 11.96223453')
 
 });
