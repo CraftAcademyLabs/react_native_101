@@ -13,13 +13,4 @@ describe('Application', () => {
       element(by.label('MOBILE WEATHER')).atIndex(1)
     ).toBeVisible();
   });
-
-  it('is expected to display location information', async () => {
-    let expectedText = 'You are at 57.71 lat and 11.96 long'
-    await waitFor(element(by.id('weatherInfo'))).toBeVisible().withTimeout(2000);
-    await expect(
-      element(by.id('weatherInfo'))
-    ).toHaveLabel(expectedText);
-  });
-
 });

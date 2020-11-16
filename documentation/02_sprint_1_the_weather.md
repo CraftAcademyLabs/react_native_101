@@ -57,7 +57,7 @@ const ApplicationHeader = () => {
   const { appTitle } = useSelector(state => state)
   return (
     <Appbar.Header>
-      <Appbar.Content title={ appTitle} />
+      <Appbar.Content title={ appTitle } />
     </Appbar.Header>
   )
 }
@@ -129,8 +129,42 @@ Please examine the changes we do to this component before implementing this. Why
 
 ### Part 2 - The Location
 
-One of our challenges, befor we even can begin thinking about displaying any weather information, is to figure out what to look for. What location are we interested in? There are countless directions to go with this, but for learning purposes, w will start with asking the devise where it is currently located.
+One of our challenges, before we even can begin thinking about displaying any weather information, is to figure out what to look for. What location are we interested in? There are countless directions we coult go with this, but for learning purposes, we will start with asking the devise where it is currently located.
+
+In order to do that, we will need to understand the basics of **Privacy settings** on mobile operating systems in general, and iOS in perticular. Privacy settings in iOS help you control  which apps have access to information stored on your device. There are many services that you can control in order to retain your privacy. **Location Service** is just one of them.
+
+With your permission, Location Services will allow apps and websites (including Maps, Camera, Weather, and other apps) to use information from Global Positioning System (GPS) networks, and Bluetooth to determine your approximate location.
+
+The first time an app tries to access your location, it must ask for your permission. You see a prompt explaining which app is asking for permission to use your location as well as the app developer's reason for requesting it.
+
+In our casee, once we set up the functionality that will make use of the Location Service, you will see the following prompt (but we are **NOT** there yet).
+
+![](./assets/02_simulator_allow_location_service.png)
+
+
+We will mak euse of 2 packages from Expo. One that deals with the [Location Service](https://docs.expo.io/versions/latest/sdk/location/), and another that allows us to tap into the [Persmissions](https://docs.expo.io/versions/latest/sdk/permissions/) flow.
+
+We add these packages to our app:
 
 ```
-$ expo install expo-location
+$ expo install expo-location expo-permissions
+```
+
+There's another package that we want to install and that will come in handy when we test our application. A bit over simplified, it will allow us to execute commands from within our program. When the time comes, we will use it to modify our iOS Simulator among other things.
+
+```
+$ yarn add -D child-process-promise
+```
+
+Anothr packade that we need is handled by Brew, and gives us the possibility to pre-set a location of iOS Simulator using an address of latitude and longitude coordinates.
+
+```
+$ brew install lyft/formulae/set-simulator-location
+```
+
+Okay, we have the necessary tools to make a determination of where in the world the devise is.
+
+We will start by creating a new file in the `modules` folder. We will call it `getLocation.js`
+
+```js
 ```

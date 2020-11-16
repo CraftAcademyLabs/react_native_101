@@ -4,20 +4,11 @@ import { useDispatch } from 'react-redux'
 import { StyleSheet, View } from 'react-native';
 import ApplicationHeader from "./components/ApplicationHeader";
 import WeatherView from "./components/WeatherView";
-import * as Location from 'expo-location';
-import * as Permissions from 'expo-permissions';
+import getLocation from "./modules/getLocation";
 
 const App = () => {
   const dispatch = useDispatch()
-  const getLocation = async () => {
-    const { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status === 'granted') {
-      let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
-      return location
-    } else {
-      throw new Error('Permission to access location was denied')
-    }
-  }
+
   useEffect(() => {
     getLocation()
       .then(location => {

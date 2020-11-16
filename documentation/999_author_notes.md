@@ -50,6 +50,21 @@ $ set-simulator-location -q Lyft HQ San Francisco
 ```
 $ brew install lyft/formulae/set-simulator-location
 ```
+#### Usage
+Allow location service using `xrun`
+```
+exec('xcrun simctl privacy booted grant location-always host.exp.Exponent')
+```
+
+Set the location by address:
+```
+exec('set-simulator-location -q Gothenburg, Sweden')
+```
+
+Set the location by coordinates:
+```
+exec('set-simulator-location -c 57.7132122 11.96223453')
+```
 ### Detox command
 set loglevel if you need to get a better output
 ```

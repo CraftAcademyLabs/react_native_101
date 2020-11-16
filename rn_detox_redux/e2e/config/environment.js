@@ -14,18 +14,12 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await adapter.beforeEach();
-  // await reloadApp({
-  //   permissions: { location: 'inuse' },
-  // })
-  exec('xcrun simctl privacy booted grant location-always host.exp.Exponent')
+  await reloadApp({
+
+  })
   await reloadApp()
-  // exec('set-simulator-location -q Gothenburg, Sweden')
   exec('set-simulator-location -c 57.7132122 11.96223453')
 
-  // await device.launchApp({
-  //   permissions: { location: 'always' },
-  // })
-  // await reloadApp()
 });
 
 
