@@ -18,11 +18,11 @@ beforeEach(async () => {
     permissions: { location: 'inuse' },
   })
   // Göteborg
-  //exec('set-simulator-location -c 57.7132122 11.96223453')
+  exec('set-simulator-location -c 57.7132122 11.96223453')
   // Stenkullen
   // exec('set-simulator-location -c 57.791900 12.309550')
   // Burlington, Iowa 40.810589
-  exec('set-simulator-location -c 40.810589 -91.101280')
+  // exec('set-simulator-location -c 40.810589 -91.101280')
 });
 
 
