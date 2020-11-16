@@ -1,0 +1,145 @@
+{
+  "documentation": "https://opencagedata.com/api",
+  "licenses": [
+    {
+      "name": "see attribution guide",
+      "url": "https://opencagedata.com/credits"
+    }
+  ],
+  "rate": {
+    "limit": 2500,
+    "remaining": 2486,
+    "reset": 1605571200
+  },
+  "results": [
+    {
+      "annotations": {
+        "DMS": {
+          "lat": "57\u00b0 42' 42.44580'' N",
+          "lng": "11\u00b0 57' 49.68072'' E"
+        },
+        "MGRS": "32VPK7655900485",
+        "Maidenhead": "JO57xr50pt",
+        "Mercator": {
+          "x": 1331804.146,
+          "y": 7870862.719
+        },
+        "OSM": {
+          "edit_url": "https://www.openstreetmap.org/edit?node=2278816340#map=16/57.71179/11.96380",
+          "note_url": "https://www.openstreetmap.org/note/new#map=16/57.71179/11.96380&layers=N",
+          "url": "https://www.openstreetmap.org/?mlat=57.71179&mlon=11.96380#map=16/57.71179/11.96380"
+        },
+        "UN_M49": {
+          "regions": {
+            "EUROPE": "150",
+            "NORTHERN_EUROPE": "154",
+            "SE": "752",
+            "WORLD": "001"
+          },
+          "statistical_groupings": [
+            "MEDC"
+          ]
+        },
+        "callingcode": 46,
+        "currency": {
+          "alternate_symbols": [
+            ":-"
+          ],
+          "decimal_mark": ",",
+          "disambiguate_symbol": "SEK",
+          "format": "%n %u",
+          "html_entity": "",
+          "iso_code": "SEK",
+          "iso_numeric": "752",
+          "name": "Swedish Krona",
+          "smallest_denomination": 100,
+          "subunit": "\u00d6re",
+          "subunit_to_unit": 100,
+          "symbol": "kr",
+          "symbol_first": 0,
+          "thousands_separator": " "
+        },
+        "flag": "\ud83c\uddf8\ud83c\uddea",
+        "geohash": "u62824pg8c2pbpw5q7j7",
+        "qibla": 139.01,
+        "roadinfo": {
+          "drive_on": "right",
+          "road": "Operan",
+          "speed_in": "km/h"
+        },
+        "sun": {
+          "rise": {
+            "apparent": 1605510060,
+            "astronomical": 1605501720,
+            "civil": 1605507360,
+            "nautical": 1605504420
+          },
+          "set": {
+            "apparent": 1605538380,
+            "astronomical": 1605546720,
+            "civil": 1605541080,
+            "nautical": 1605543960
+          }
+        },
+        "timezone": {
+          "name": "Europe/Stockholm",
+          "now_in_dst": 0,
+          "offset_sec": 3600,
+          "offset_string": "+0100",
+          "short_name": "CET"
+        },
+        "what3words": {
+          "words": "ranches.cape.polite"
+        }
+      },
+      "bounds": {
+        "northeast": {
+          "lat": 57.7118405,
+          "lng": 11.9638502
+        },
+        "southwest": {
+          "lat": 57.7117405,
+          "lng": 11.9637502
+        }
+      },
+      "components": {
+        "ISO_3166-1_alpha-2": "SE",
+        "ISO_3166-1_alpha-3": "SWE",
+        "_category": "unknown",
+        "_type": "historic",
+        "city": "G\u00f6teborg",
+        "city_district": "Centrum",
+        "continent": "Europe",
+        "country": "Sverige",
+        "country_code": "se",
+        "county": "V\u00e4stra G\u00f6talands l\u00e4n",
+        "historic": "Evert Taube",
+        "municipality": "G\u00f6teborgs kommun",
+        "political_union": "European Union",
+        "postcode": "411 05",
+        "road": "Operan",
+        "suburb": "Nordstaden"
+      },
+      "confidence": 9,
+      "formatted": "Evert Taube, Operan, 411 05 G\u00f6teborg, Sverige",
+      "geometry": {
+        "lat": 57.7117905,
+        "lng": 11.9638002
+      }
+    }
+  ],
+  "status": {
+    "code": 200,
+    "message": "OK"
+  },
+  "stay_informed": {
+    "blog": "https://blog.opencagedata.com",
+    "twitter": "https://twitter.com/OpenCage"
+  },
+  "thanks": "For using an OpenCage API",
+  "timestamp": {
+    "created_http": "Mon, 16 Nov 2020 18:42:04 GMT",
+    "created_unix": 1605552124
+  },
+  "total_results": 1
+}

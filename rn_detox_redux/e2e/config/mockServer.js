@@ -20,9 +20,9 @@ const mockServer = {
 
   close(server) {
     server.close();
-    sockets.forEach(socketId => {
+    for (let socketId in sockets) {
       sockets[socketId].destroy();
-    });
+    };
     return null
   }
 }

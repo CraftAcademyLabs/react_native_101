@@ -7,7 +7,15 @@ describe('Application', () => {
   });
 
   it('is expected to display location information', async () => {
-    let expectedText = 'You are at 57.71 lat and 11.96 long'
+    let expectedText = 'Göteborg'
+    await waitFor(element(by.id('locationInfo'))).toBeVisible().withTimeout(2000);
+    await expect(
+      element(by.id('locationInfo'))
+    ).toHaveLabel(expectedText);
+  });
+
+  it('is expected to display weather information', async () => {
+    let expectedText = '12℃'
     await waitFor(element(by.id('weatherInfo'))).toBeVisible().withTimeout(2000);
     await expect(
       element(by.id('weatherInfo'))
