@@ -7,6 +7,11 @@ const getDetailedLocationInfo = async options => {
       q: encodeURI(`${options.latitude},${options.longitude}`),
       key: OC_API_KEY
     }} )
+  debugger
+  // the interesting part here is to figure out what the 'components' object look like so we know what to display on the screen
+  
+  let attributes = Object.keys(response.data.results[0].components)
+
   return response.data.results[0].components
 }
 

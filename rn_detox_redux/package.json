@@ -1,9 +1,11 @@
 {
   "main": "index",
   "scripts": {
-    "start": "expo start",
+    "start": "expo start -c",
+    "start:prod": "expo start -c --no-dev",
     "android": "expo start --android",
     "ios": "expo start --ios",
+    "ios:prod": "expo start --ios --no-dev",
     "web": "expo start --web",
     "eject": "expo eject"
   },

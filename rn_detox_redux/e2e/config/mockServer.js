@@ -4,7 +4,7 @@ import mockserver from 'mockserver'
 let sockets = {}, nextSocketId = 0;
 
 
-const mockServer = {
+const MockServer = {
   open(port) {
     let server = http.createServer(mockserver('./e2e/mocks')).listen(port);
     server.on('connection', (socket) => {
@@ -27,4 +27,4 @@ const mockServer = {
   }
 }
 
-export default mockServer
+export default MockServer
