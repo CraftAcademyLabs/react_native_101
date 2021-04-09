@@ -46,6 +46,8 @@ Or using place search:
 ```
 $ set-simulator-location -q Lyft HQ San Francisco
 ```
+
+For Android Studio, we might need to set this up: https://stackoverflow.com/a/2279827/1354994
 #### Installation
 ```
 $ brew install lyft/formulae/set-simulator-location

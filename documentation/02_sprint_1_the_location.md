@@ -335,6 +335,8 @@ beforeEach(async () => {
   await reloadApp({
     permissions: { location: 'inuse' },
   })
+  // This is iOS only
+  // check https://stackoverflow.com/a/2279827/1354994 for possible Android Studio method..
   exec('set-simulator-location -c 57.7132122 11.96223453')
 });
 

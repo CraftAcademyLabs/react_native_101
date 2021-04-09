@@ -3,7 +3,7 @@ import adapter from "detox/runners/jest/adapter";
 import { reloadApp } from 'detox-expo-helpers';
 import MockServer from './mockServer'
 import Simulator from './simulator'
-import { exec } from "child-process-promise";
+// import { exec } from "child-process-promise";
 
 let server
 jest.setTimeout(120000);

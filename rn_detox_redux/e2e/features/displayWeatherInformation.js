@@ -15,7 +15,7 @@ describe('Application', () => {
   });
 
   it('is expected to display weather information', async () => {
-    let expectedText = '12℃'
+    let expectedText = '24℃'
     await waitFor(element(by.id('weatherInfo'))).toBeVisible().withTimeout(2000);
     await expect(
       element(by.id('weatherInfo'))
