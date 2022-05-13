@@ -44,3 +44,6 @@ const ArticleItem = ({ article }) => {
   )
 }
 ```
+
+All of this UI would be unstyled. We can style every primitive ourselfes, or we can rely on a Design Framework like [Paper](https://callstack.github.io/react-native-paper/) to do the job for us. 
+
